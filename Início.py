@@ -17,13 +17,14 @@ Explore os dados coletados e navegue pelos diferentes painéis para descobrir te
 )
 
 # Dados
+ipea = GetIPEAData(
+            ipea_table="EIA366_PBRENT366",
+            database_path="source\ipea_brent_oil.csv"
+        )
 if "df_data" not in st.session_state:
     # st.session_state.df_data = pd.read_csv("source\ipea_brent_oil.csv", sep=",")
     # st.session_state.df_data = st.session_state.df_data['date'] = pd.to_datetime(st.session_state.df_data['date'], format='%Y-%m-%d')
-    st.session_state.df_data = GetIPEAData(
-                                    ipea_table="EIA366_PBRENT366",
-                                    database_path="..\source\ipea_brent_oil.csv"
-                                )
+    st.session_state.df_data = ipea.df_brent_oil
 
 st.line_chart(st.session_state.df_data, x='date', y='value', use_container_width=True)
 
