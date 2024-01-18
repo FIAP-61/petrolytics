@@ -11,7 +11,8 @@ class GetIPEAData:
     def __init__(self, ipea_table: str, database_path: str) -> None:
         self.ipea_table = ipea_table
         self.database_path = database_path
-        self.etl_process()
+        self.df_old = self.read_existing_date()
+        self.df_brent_oil = self.etl_process()
 
 
     def call_ipea(self):
@@ -56,15 +57,25 @@ class GetIPEAData:
 
     def etl_process(self):
         """Processo de ETL dos dados"""
-        df_ipea_brent_oil = self.call_ipea()
-        df_ipea_brent_oil = self.transform_data(df_ipea_brent_oil)
+        try:
+            # Chama api e transforma os dados
+            df_ipea_brent_oil = self.call_ipea()
+            df_ipea_brent_oil = self.transform_data(df_ipea_brent_oil)
 
-        df = self.read_existing_date()
-        if not df.empty:
-            df_ipea_brent_oil = self.incremental_update(df_ipea_brent_oil, df)
+            # Caso exista a base apenas adiciona linhas novas
+            if not self.df_old.empty:
+                df_ipea_brent_oil = self.incremental_update(df_ipea_brent_oil, self.df_old)
 
-        df_ipea_brent_oil.to_csv(self.database_path, index=False)
-        return df
+            df_ipea_brent_oil.to_csv(self.database_path, index=False)
+            return df_ipea_brent_oil
+        
+        except Exception as e:
+            # Caso exista dados na base retorna os dados existentes
+            if not self.df_old.empty:
+                return self.df_old
+            
+            else:
+                input(f'\nError: {e}\n')
 
 
 if __name__ == "__main__":
@@ -73,3 +84,4 @@ if __name__ == "__main__":
         ipea_table="EIA366_PBRENT366",
         database_path=".\source\ipea_brent_oil.csv"
     )
+    df.df_ipea.head()
