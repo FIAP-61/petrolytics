@@ -26,7 +26,7 @@ if "df_data" not in st.session_state:
     # st.session_state.df_data = st.session_state.df_data['date'] = pd.to_datetime(st.session_state.df_data['date'], format='%Y-%m-%d')
     st.session_state.df_data = ipea.df_brent_oil
 
-model_swa = joblib.load(r'.\model\swa.joblib')
+model_swa = joblib.load('swa.joblib')
 df_pred = model_swa.predict(h=90, level=[95])
 
 
