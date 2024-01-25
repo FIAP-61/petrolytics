@@ -28,6 +28,7 @@ if "df_data" not in st.session_state:
 
 st.line_chart(st.session_state.df_data, x='date', y='value', use_container_width=True)
 
+st.write(pd.__version__)
 # # Layout do aplicativo
 # tab0, tab1 = st.tabs(["Ferramentas Utilizadas", "Colunas Selecionadas"])
 
