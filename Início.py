@@ -1,6 +1,11 @@
+# Libs
 import streamlit as st
 import pandas as pd
 from project.get_data import GetIPEAData
+
+# Dataviz libs
+import plotly.express as px
+import plotly.graph_objects as go
 
 
 # Configurações da página
@@ -16,20 +21,70 @@ Explore os dados coletados e navegue pelos diferentes painéis para descobrir te
 """
 )
 
-# Dados
-ipea = GetIPEAData(
-            ipea_table="EIA366_PBRENT366",
-            database_path="source\ipea_brent_oil.csv"
-        )
 if "df_data" not in st.session_state:
+    # Dados
     # st.session_state.df_data = pd.read_csv("source\ipea_brent_oil.csv", sep=",")
     # st.session_state.df_data = st.session_state.df_data['date'] = pd.to_datetime(st.session_state.df_data['date'], format='%Y-%m-%d')
+    ipea = GetIPEAData(
+        ipea_table="EIA366_PBRENT366", database_path="source\ipea_brent_oil.csv"
+    )
     st.session_state.df_data = ipea.df_brent_oil
 
-st.line_chart(st.session_state.df_data, x='date', y='value', use_container_width=True)
+# Crie um widget date_input para o usuário selecionar um intervalo de datas
+col1, col2 = st.columns(2)
+with col1:
+    start_date = pd.to_datetime(
+        st.date_input(
+            "Selecione a data de início", st.session_state.df_data["date"].min()
+        )
+    )
+with col2:
+    end_date = pd.to_datetime(
+        st.date_input(
+            "Selecione a data de término", st.session_state.df_data["date"].max()
+        )
+    )
 
-st.write(f'Pandas: {pd.__version__}')
-st.write(f'Streamlit: {st.__version__}')
+# Gráfico de linha com filtros
+fig = px.line(st.session_state.df_data, x="date", y="value")
+mask = (st.session_state.df_data["date"] >= start_date) & (
+    st.session_state.df_data["date"] <= end_date
+)
+fig.update_traces(x=st.session_state.df_data[mask]["date"])
+
+# Design & layout
+fig.update_layout(
+    title='Distribuição do valor do petróleo Brent ao longo dos anos',
+    title_x=0.5,
+    title_font=dict(size=24),
+    width=2000, 
+    height=500,
+    template='plotly_dark'
+    )
+
+fig.update_xaxes(
+    title='Anos',
+    title_font=dict(size=18)
+    )
+
+fig.update_yaxes(
+    title='Valor',
+    title_font=dict(size=18)
+    )
+
+idx = st.session_state.df_data.groupby(st.session_state.df_data[mask]["date"].dt.year)["value"].idxmax()
+
+# Adicione um ponto ao gráfico em cada um desses índices
+fig.add_trace(px.scatter(st.session_state.df_data.loc[idx], x="date", y="value").data[0])
+fig.update_traces(
+    marker=dict(
+        color='red',
+        size=10        )
+    )
+
+
+st.plotly_chart(fig, use_container_width=True)
+st.write('Pontos vermelhos são os maiores picos em cada ano')
 # # Layout do aplicativo
 # tab0, tab1 = st.tabs(["Ferramentas Utilizadas", "Colunas Selecionadas"])
 
@@ -46,9 +101,9 @@ st.write(f'Streamlit: {st.__version__}')
 #     st.markdown(
 #         """
 #     ### Base de Dados &  Transformação
-#     Os dados foram ingeridos dentro do sistema de DBFS (Sistema de Arquivos do Databricks).   
-#     Com o pyspark dentro do databricks foi possível criar a tabela final para o streamlit consumir os dados, fazendo diversos tratamentos e utilizando as bases do PNAN Covid referentes aos meses de setembro, outubro e novembro de 2020.  
-#     Acesse o link para visualizar o notebook.    
+#     Os dados foram ingeridos dentro do sistema de DBFS (Sistema de Arquivos do Databricks).
+#     Com o pyspark dentro do databricks foi possível criar a tabela final para o streamlit consumir os dados, fazendo diversos tratamentos e utilizando as bases do PNAN Covid referentes aos meses de setembro, outubro e novembro de 2020.
+#     Acesse o link para visualizar o notebook.
 #     [Databricks Notebook ↗](https://databricks-prod-cloudfront.cloud.databricks.com/public/4027ec902e239c93eaaa8714f173bcfc/5375801336056031/59063656447375/8314753084412668/latest.html)
 #     #
 #     """
@@ -68,9 +123,9 @@ st.write(f'Streamlit: {st.__version__}')
 #     df_chosen_cols = pd.read_csv("chosen_cols.csv", sep="	")
 #     st.markdown(
 #         """
-#         ## Colunas Selecionadas 
-#         Foi realizado uma análise dentre aproximadamente 150 colunas disponíveis dentro da base do PNAD Covid, e foram selecionadas as descritas na tabela a seguir.   
-#         As colunas que estão numeradas em "Coluna Escolhida" são as que entram na contagem do limite de 20 colunas possíveis.  
+#         ## Colunas Selecionadas
+#         Foi realizado uma análise dentre aproximadamente 150 colunas disponíveis dentro da base do PNAD Covid, e foram selecionadas as descritas na tabela a seguir.
+#         As colunas que estão numeradas em "Coluna Escolhida" são as que entram na contagem do limite de 20 colunas possíveis.
 #         """
 #     )
 #     st.dataframe(df_chosen_cols)

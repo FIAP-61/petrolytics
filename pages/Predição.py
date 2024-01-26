@@ -16,14 +16,14 @@ st.set_page_config(page_title="Início", page_icon="🔮", layout="wide")
 
 st.write("# Predizendo os dados do Petróleo Brent 🔮")
 
-# Dados
-ipea = GetIPEAData(
-            ipea_table="EIA366_PBRENT366",
-            database_path="source\ipea_brent_oil.csv"
-        )
 if "df_data" not in st.session_state:
+    # Dados
     # st.session_state.df_data = pd.read_csv("source\ipea_brent_oil.csv", sep=",")
     # st.session_state.df_data = st.session_state.df_data['date'] = pd.to_datetime(st.session_state.df_data['date'], format='%Y-%m-%d')
+    ipea = GetIPEAData(
+                ipea_table="EIA366_PBRENT366",
+                database_path="source\ipea_brent_oil.csv"
+            )
     st.session_state.df_data = ipea.df_brent_oil
 
 model_swa = joblib.load('swa.joblib')
@@ -32,7 +32,6 @@ df_pred = model_swa.predict(h=90, level=[95])
 
 # Dados preditos
 df_pred = df_pred[(df_pred['ds'] > datetime.today()) & (df_pred['ds'] < datetime.today() + timedelta(8))]
-st.dataframe(df_pred)  
 
 fig = px.line(df_pred, x='ds', y='SeasWA', hover_data=['SeasWA'])
 
