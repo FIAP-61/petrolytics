@@ -85,6 +85,32 @@ fig.update_traces(
 
 st.plotly_chart(fig, use_container_width=True)
 st.write('Pontos vermelhos são os maiores picos em cada ano')
+
+
+
+# Análisar em que página fica
+st.divider()
+
+with st.expander("Fluxograma do processo de atualização e predição dos dados"):
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1: pass
+    
+    with col2: 
+        st.write(
+            '''
+            Pontos a serem considerados:  
+            - API de atualização foi criada utilizando a biblioteca: "ipeadatapy"  
+            - Base de dados no momento da criação do tech challenge é um arquivo em csv que é atualizado de forma incremental  
+            - Modelo de machine learning utilizado é o da SeasonalWindowAverage biblioteca statsforecast
+            '''
+            )
+        st.image("pages/petrolytics_flowchart.png")
+    
+    with col3: pass
+
+
 # # Layout do aplicativo
 # tab0, tab1 = st.tabs(["Ferramentas Utilizadas", "Colunas Selecionadas"])
 
