@@ -30,6 +30,8 @@ st.write(
     "Por esse motivo parte da análise desse projeto leva em consideração informações do Euro já que o local de extração do recurso está na fronteira de países europeus."
 )
 
+
+
 st.markdown(
     "Fonte: [North Sea Brent Crude](https://corporatefinanceinstitute.com/resources/commodities/north-sea-brent-crude/)"
 )
