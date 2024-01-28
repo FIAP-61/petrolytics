@@ -15,7 +15,7 @@ st.write("# Petrolytics: Explorando os dados do IPEA 🛢️")
 
 st.markdown(
     """
-Bem-vindo ao Petrolytics, sua plataforma analítica para o mundo dinâmico do petróleo Brent. Em um mercado que oscila com os ventos da política global, crises econômicas e demandas energéticas em constante mudança, a capacidade de entender e antecipar as tendências dos preços do petróleo é mais valiosa do que nunca. Petrolytics é uma ferramenta dedicada a desvendar os mistérios por trás das flutuações dos preços, equipando analistas, traders e decisores com insights cruciais para navegar no mercado energético com confiança.
+Boas vindas ao Petrolytics, sua plataforma analítica para o mundo dinâmico do petróleo Brent. Em um mercado que oscila com os ventos da política global, crises econômicas e demandas energéticas em constante mudança, a capacidade de entender e antecipar as tendências dos preços do petróleo é mais valiosa do que nunca. Petrolytics é uma ferramenta dedicada a desvendar os mistérios por trás das flutuações dos preços, equipando analistas, traders e decisores com insights cruciais para navegar no mercado energético com confiança.
 
 Nossa aplicação web construída com Streamlit combina análises detalhadas e visualizações interativas para transformar dados complexos em compreensões claras e acionáveis. Com Petrolytics, você pode mergulhar nos dados históricos e emergentes do preço do petróleo Brent, explorar padrões sazonais e identificar as tendências que moldam o futuro da energia.
 
@@ -47,7 +47,7 @@ with st.expander("Fluxograma do processo de atualização e predição dos dados
             - Para visualizar o processo de transformação dos dados consulte o código no github;  
             - API de atualização foi criada utilizando a biblioteca: "ipeadatapy";
             - Base de dados no momento da criação do tech challenge é um arquivo em csv que é atualizado de forma incremental;
-            - Modelo de machine learning utilizado é o da SeasonalWindowAverage biblioteca statsforecast;
+            - Modelo de machine learning utilizado é o da SeasonalWindowAverage biblioteca statsforecast.
             """
         )
         st.image("pages/petrolytics_flowchart.png")
