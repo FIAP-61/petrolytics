@@ -28,63 +28,6 @@ if "df_data" not in st.session_state:
     ipea = GetIPEAData(database_path="source\db_main.csv")
     st.session_state.df_data = ipea.db_main
 
-# Crie um widget date_input para o usuário selecionar um intervalo de datas
-col1, col2 = st.columns(2)
-with col1:
-    start_date = pd.to_datetime(
-        st.date_input(
-            "Selecione a data de início", st.session_state.df_data["date"].min()
-        )
-    )
-with col2:
-    end_date = pd.to_datetime(
-        st.date_input(
-            "Selecione a data de término", st.session_state.df_data["date"].max()
-        )
-    )
-
-# Gráfico de linha com filtros
-fig = px.line(st.session_state.df_data, x="date", y="oil_value_usd")
-mask = (st.session_state.df_data["date"] >= start_date) & (
-    st.session_state.df_data["date"] <= end_date
-)
-fig.update_traces(x=st.session_state.df_data[mask]["date"])
-
-# Design & layout
-fig.update_layout(
-    title='Distribuição do valor do petróleo Brent ao longo dos anos',
-    title_x=0.5,
-    title_font=dict(size=24),
-    width=2000, 
-    height=500,
-    template='plotly_dark'
-    )
-
-fig.update_xaxes(
-    title='Anos',
-    title_font=dict(size=18)
-    )
-
-fig.update_yaxes(
-    title='Valor',
-    title_font=dict(size=18)
-    )
-
-idx = st.session_state.df_data.groupby(st.session_state.df_data[mask]["date"].dt.year)["oil_value_usd"].idxmax()
-
-# Adicione um ponto ao gráfico em cada um desses índices
-fig.add_trace(px.scatter(st.session_state.df_data.loc[idx], x="date", y="oil_value_usd").data[0])
-fig.update_traces(
-    marker=dict(
-        color='red',
-        size=10        )
-    )
-
-
-st.plotly_chart(fig, use_container_width=True)
-st.write('Pontos vermelhos são os maiores picos em cada ano')
-
-
 
 # Análisar em que página fica
 st.divider()

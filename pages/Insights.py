@@ -54,7 +54,6 @@ with tab0:
     # Design & layout
     fig.update_layout(
         title='Distribuição do valor do petróleo Brent ao longo dos anos',
-        title_x=0.5,
         title_font=dict(size=24),
         width=2000, 
         height=500,
@@ -87,6 +86,7 @@ with tab0:
 
 
 with tab1:
+
     correlation_matrix = st.session_state.df_data.corr().round(2)
     fig = ff.create_annotated_heatmap(
         z=correlation_matrix.to_numpy(),
@@ -100,14 +100,11 @@ with tab1:
         colorscale='ice'
         )
     fig.update_layout(
-            title='Contagem de valores nos dias da semana',
-            title_font=dict(size=24),
-            width=500, 
-            height=500
-            )
-    fig.update_layout(
         title='Matriz de Correlação',
-        xaxis_nticks=36)
+        title_font=dict(size=24),
+        width=500, 
+        height=500
+        )
     st.plotly_chart(fig, use_container_width=True)
 
 
@@ -162,7 +159,6 @@ with tab2:
         )
     fig.update_layout(
             title='Distribuição do valor do Petróleo Brent em cada ano por dia da semana',
-            title_x=0.5,
             title_font=dict(size=24),
             width=500, 
             height=750,
