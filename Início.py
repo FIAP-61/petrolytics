@@ -25,10 +25,8 @@ if "df_data" not in st.session_state:
     # Dados
     # st.session_state.df_data = pd.read_csv("source\ipea_brent_oil.csv", sep=",")
     # st.session_state.df_data = st.session_state.df_data['date'] = pd.to_datetime(st.session_state.df_data['date'], format='%Y-%m-%d')
-    ipea = GetIPEAData(
-        ipea_table="EIA366_PBRENT366", database_path="source\ipea_brent_oil.csv"
-    )
-    st.session_state.df_data = ipea.df_brent_oil
+    ipea = GetIPEAData(database_path="source\db_main.csv")
+    st.session_state.df_data = ipea.db_main
 
 # Crie um widget date_input para o usuário selecionar um intervalo de datas
 col1, col2 = st.columns(2)
@@ -46,7 +44,7 @@ with col2:
     )
 
 # Gráfico de linha com filtros
-fig = px.line(st.session_state.df_data, x="date", y="value")
+fig = px.line(st.session_state.df_data, x="date", y="oil_value_usd")
 mask = (st.session_state.df_data["date"] >= start_date) & (
     st.session_state.df_data["date"] <= end_date
 )
@@ -72,10 +70,10 @@ fig.update_yaxes(
     title_font=dict(size=18)
     )
 
-idx = st.session_state.df_data.groupby(st.session_state.df_data[mask]["date"].dt.year)["value"].idxmax()
+idx = st.session_state.df_data.groupby(st.session_state.df_data[mask]["date"].dt.year)["oil_value_usd"].idxmax()
 
 # Adicione um ponto ao gráfico em cada um desses índices
-fig.add_trace(px.scatter(st.session_state.df_data.loc[idx], x="date", y="value").data[0])
+fig.add_trace(px.scatter(st.session_state.df_data.loc[idx], x="date", y="oil_value_usd").data[0])
 fig.update_traces(
     marker=dict(
         color='red',
@@ -100,7 +98,8 @@ with st.expander("Fluxograma do processo de atualização e predição dos dados
     with col2: 
         st.write(
             '''
-            Pontos a serem considerados:  
+            Pontos a serem considerados:
+            - Para visualizar o processo de transformação dos dados consulte o código no github  
             - API de atualização foi criada utilizando a biblioteca: "ipeadatapy"  
             - Base de dados no momento da criação do tech challenge é um arquivo em csv que é atualizado de forma incremental  
             - Modelo de machine learning utilizado é o da SeasonalWindowAverage biblioteca statsforecast

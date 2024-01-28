@@ -28,16 +28,6 @@ tab1, tab2= st.tabs(
 )
 
 with tab1:
-    if "df_data" not in st.session_state:
-        # Dados
-        # st.session_state.df_data = pd.read_csv("source\ipea_brent_oil.csv", sep=",")
-        # st.session_state.df_data = st.session_state.df_data['date'] = pd.to_datetime(st.session_state.df_data['date'], format='%Y-%m-%d')
-        ipea = GetIPEAData(
-                    ipea_table="EIA366_PBRENT366",
-                    database_path="source\ipea_brent_oil.csv"
-                )
-        st.session_state.df_data = ipea.df_brent_oil
-
     # Texto da Sugestão do Modelo
     st.header("Seasonal Window Average")
     st.write(
