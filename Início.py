@@ -15,9 +15,11 @@ st.write("# Petrolytics: Explorando os dados do IPEA 🛢️")
 
 st.markdown(
     """
-Bem-vindo ao Petrolytics, sua bússola analítica na era pós-pandêmica. Enquanto o mundo continua a navegar pelas consequências da COVID-19, a capacidade de entender e prever as tendências de saúde pública nunca foi tão crucial. Hospitalytics é uma plataforma dedicada a decifrar o comportamento da pandemia usando dados do PNAD-COVID-19 do IBGE, equipando profissionais de saúde com insights essenciais para antecipar e combater ondas futuras de infecções. Mergulhe conosco na jornada através dos dados, onde cada gráfico revela uma história, cada número fala sobre vidas e cada insight pode ser a chave para salvar mais amanhãs. Nossa aplicação web, construída com Streamlit, reúne informações abrangentes e visualizações intuitivas para facilitar a compreensão e a tomada de decisões estratégicas.
+Bem-vindo ao Petrolytics, sua plataforma analítica para o mundo dinâmico do petróleo Brent. Em um mercado que oscila com os ventos da política global, crises econômicas e demandas energéticas em constante mudança, a capacidade de entender e antecipar as tendências dos preços do petróleo é mais valiosa do que nunca. Petrolytics é uma ferramenta dedicada a desvendar os mistérios por trás das flutuações dos preços, equipando analistas, traders e decisores com insights cruciais para navegar no mercado energético com confiança.
 
-Explore os dados coletados e navegue pelos diferentes painéis para descobrir tendências, identificar as principais variações e compreender o impacto em diversas demografias e aspectos socioeconômicos. Nosso objetivo é fornecer uma experiência intuitiva e rica em informações para que você possa explorar, analisar e extrair insights valiosos dos dados disponíveis.
+Nossa aplicação web, construída com Streamlit, combina análises detalhadas e visualizações interativas para transformar dados complexos em compreensões claras e acionáveis. Com Petrolytics, você pode mergulhar nos dados históricos e emergentes do preço do petróleo Brent, explorar padrões sazonais e identificar as tendências que moldam o futuro da energia.
+
+Explore, analise e extraia o máximo dos dados disponíveis. Cada gráfico conta uma parte da história, cada análise revela nuances do mercado, e cada insight oferecido pode ser a chave para sua próxima decisão estratégica.
 """
 )
 
@@ -33,24 +35,25 @@ if "df_data" not in st.session_state:
 st.divider()
 
 with st.expander("Fluxograma do processo de atualização e predição dos dados"):
-
     col1, col2, col3 = st.columns(3)
 
-    with col1: pass
-    
-    with col2: 
+    with col1:
+        pass
+
+    with col2:
         st.write(
-            '''
+            """
             Pontos a serem considerados:
             - Para visualizar o processo de transformação dos dados consulte o código no github  
             - API de atualização foi criada utilizando a biblioteca: "ipeadatapy"  
             - Base de dados no momento da criação do tech challenge é um arquivo em csv que é atualizado de forma incremental  
             - Modelo de machine learning utilizado é o da SeasonalWindowAverage biblioteca statsforecast
-            '''
-            )
+            """
+        )
         st.image("pages/petrolytics_flowchart.png")
-    
-    with col3: pass
+
+    with col3:
+        pass
 
 
 # # Layout do aplicativo
