@@ -1,0 +1,6 @@
+Métrica de Avaliação|Naive|Seasonal Naive|Seasonal Window Average|AutoARIMA|Prophet
+MAE|3,82|3,45|3,45|3,95|9,15
+MSE|19,26|17,08|17,08|20,32|88,29
+RMSE|4,38|4,13|4,13|4,50|9,39
+MAPE|4.99|4.51|4.51|5.16|110.80
+WMAPE|4,91%|4,44%|4,44%|5,08%|11,75%
