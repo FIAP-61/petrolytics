@@ -18,7 +18,7 @@ def highlight_min(s):
 
 
 # Configurações da página
-st.set_page_config(page_title="Início", page_icon="🔮", layout="wide")
+st.set_page_config(page_title="Predição", page_icon="🔮", layout="wide")
 st.write("# Predizendo os dados do Petróleo Brent 🔮")
 
 

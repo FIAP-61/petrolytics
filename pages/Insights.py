@@ -10,8 +10,8 @@ import plotly.figure_factory as ff
 from plotly.subplots import make_subplots
 
 # Configurações da página
-st.set_page_config(page_title="Insigths", page_icon="🛢️", layout="wide")
-st.header("Insights Extraídos")
+st.set_page_config(page_title="Insights", page_icon="📊", layout="wide")
+st.header("Insights Extraídos 📊")
 
 # Layout do aplicativo
 tab0, tab1, tab2 = st.tabs(
