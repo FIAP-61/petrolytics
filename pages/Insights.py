@@ -99,12 +99,6 @@ with tab1:
     fig.update_layout(
         title="Matriz de Correlação", title_font=dict(size=24), width=500, height=500
     )
-    fig.update_xaxes(
-        ticktext=["Nova Coluna 1", "Nova Coluna 2", "Nova Coluna 3", 'a', 'a', 'a', 'a']
-        )
-    fig.update_yaxes(
-        ticktext=["Nova Coluna 1", "Nova Coluna 2", "Nova Coluna 3", 'a', 'a', 'a', 'a']
-        )
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown(
