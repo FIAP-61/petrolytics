@@ -84,6 +84,7 @@ with tab0:
 
 with tab1:
     correlation_matrix = st.session_state.df_data.corr().round(2)
+    correlation_matrix.columns = ['Ano', 'Mês', 'Dia', 'Valor Brent (USD)', 'Valor Euro (USD)', 'Valor Dolar (BRL)', 'IPC Percent (a.m)', 'Valor Nasdaq'] 
     fig = ff.create_annotated_heatmap(
         z=correlation_matrix.to_numpy(),
         y=correlation_matrix.columns.to_list(),
@@ -98,6 +99,12 @@ with tab1:
     fig.update_layout(
         title="Matriz de Correlação", title_font=dict(size=24), width=500, height=500
     )
+    fig.update_xaxes(
+        ticktext=["Nova Coluna 1", "Nova Coluna 2", "Nova Coluna 3", 'a', 'a', 'a', 'a']
+        )
+    fig.update_yaxes(
+        ticktext=["Nova Coluna 1", "Nova Coluna 2", "Nova Coluna 3", 'a', 'a', 'a', 'a']
+        )
     st.plotly_chart(fig, use_container_width=True)
 
     st.markdown(
