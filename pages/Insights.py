@@ -84,7 +84,16 @@ with tab0:
 
 with tab1:
     correlation_matrix = st.session_state.df_data.corr().round(2)
-    correlation_matrix.columns = ['Ano', 'Mês', 'Dia', 'Valor Brent (USD)', 'Valor Euro (USD)', 'Valor Dolar (BRL)', 'IPC Percent (a.m)', 'Valor Nasdaq'] 
+    correlation_matrix.columns = [
+        "Ano",
+        "Mês",
+        "Dia",
+        "Valor Brent (USD)",
+        "Valor Euro (USD)",
+        "Valor Dolar (BRL)",
+        "IPC Percent (a.m)",
+        "Valor Nasdaq",
+    ]
     fig = ff.create_annotated_heatmap(
         z=correlation_matrix.to_numpy(),
         y=correlation_matrix.columns.to_list(),
@@ -96,6 +105,7 @@ with tab1:
         hoverongaps=True,
         colorscale="ice",
     )
+
     fig.update_layout(
         title="Matriz de Correlação", title_font=dict(size=24), width=500, height=500
     )
