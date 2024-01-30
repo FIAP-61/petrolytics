@@ -83,7 +83,7 @@ with tab0:
 
 
 with tab1:
-    db_war_contry = pd.read_csv(r'..\war_data\countries-in-conflict-data-all.csv', sep=",")
+    db_war_contry = pd.read_csv('countries-in-conflict-data-all.csv', sep=",")
     db_war_contry = db_war_contry.rename(columns={'Entity': 'country', 'Code': 'code', 'Year': 'year', 'Deaths in ongoing conflicts in a country (best estimate) - Conflict_type: all': 'conflict_deaths'})
     db_war_contry = db_war_contry.drop(db_war_contry[db_war_contry['conflict_deaths'] == 0].index)
     db_war_contry = db_war_contry.dropna(subset="conflict_deaths")
@@ -91,7 +91,7 @@ with tab1:
     db_war_contry = db_war_contry[['key_reference', 'country', 'code', 'year', 'conflict_deaths']]
 
 
-    db_war_type = pd.read_csv(r'..\war_data\countries-in-conflict-data-by-type.csv', sep=",")
+    db_war_type = pd.read_csv('countries-in-conflict-data-by-type.csv', sep=",")
     db_war_type = db_war_type.rename(columns={'Entity': 'country', 'Code': 'code', 'Year': 'year', 'One-sided violence': 'one_sided_violence', 'Non-state': 'non_state', 'Intrastate': 'intra_state', 'Interstate': 'inter_state'})
     db_war_type['total_deaths'] = db_war_type['one_sided_violence'].astype(str) + db_war_type['non_state'].astype(str) + db_war_type['intra_state'].astype(str) + db_war_type['inter_state'].astype(str)
     db_war_type = db_war_type.drop(db_war_type[db_war_type['total_deaths'] == '0000'].index)
