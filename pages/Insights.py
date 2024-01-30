@@ -23,6 +23,9 @@ if "df_data" not in st.session_state:
     ipea = GetIPEAData(database_path="source\db_main.csv")
     st.session_state.df_data = ipea.db_main
 
+st.session_state.db_war_contry = pd.read_csv('countries-in-conflict-data-all.csv', sep=",")
+st.session_state.db_war_type = pd.read_csv('countries-in-conflict-data-by-type.csv', sep=",")
+
 
 with tab0:
     # Crie um widget date_input para o usuário selecionar um intervalo de datas
