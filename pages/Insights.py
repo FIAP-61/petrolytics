@@ -83,21 +83,58 @@ with tab0:
 
 
 with tab1:
-    correlation_matrix = st.session_state.df_data.corr().round(2)
-    correlation_matrix.columns = [
+    db_war_contry = pd.read_csv(
+    r'war_data\countries-in-conflict-data-all.csv'
+    , sep=","
+    )
+    db_war_contry = db_war_contry.rename(columns={'Entity': 'country', 'Code': 'code', 'Year': 'year', 'Deaths in ongoing conflicts in a country (best estimate) - Conflict_type: all': 'conflict_deaths'})
+    db_war_contry = db_war_contry.drop(db_war_contry[db_war_contry['conflict_deaths'] == 0].index)
+    db_war_contry = db_war_contry.dropna(subset="conflict_deaths")
+    db_war_contry['key_reference'] = db_war_contry['code'] + db_war_contry['year'].astype(str)
+    db_war_contry = db_war_contry[['key_reference', 'country', 'code', 'year', 'conflict_deaths']]
+
+
+    db_war_type = pd.read_csv(
+    r'war_data\countries-in-conflict-data-by-type.csv'
+    , sep=","
+    )
+    db_war_type = db_war_type.rename(columns={'Entity': 'country', 'Code': 'code', 'Year': 'year', 'One-sided violence': 'one_sided_violence', 'Non-state': 'non_state', 'Intrastate': 'intra_state', 'Interstate': 'inter_state'})
+    db_war_type['total_deaths'] = db_war_type['one_sided_violence'].astype(str) + db_war_type['non_state'].astype(str) + db_war_type['intra_state'].astype(str) + db_war_type['inter_state'].astype(str)
+    db_war_type = db_war_type.drop(db_war_type[db_war_type['total_deaths'] == '0000'].index)
+    db_war_type = db_war_type.dropna(subset="total_deaths")
+    db_war_type['key_reference'] = db_war_type['code'] + db_war_type['year'].astype(str)
+    db_war_type = db_war_type[['key_reference', 'country', 'code', 'year', 'one_sided_violence', 'non_state', 'intra_state', 'inter_state']]
+
+
+    db_war = db_war_contry.merge(db_war_type, how='left', on='key_reference')
+    db_war = db_war.drop(columns=['country_y', 'code_y', 'year_y'])
+    db_war = db_war.rename(columns={'country_x': 'country', 'code_x': 'code', 'year_x': 'year'})
+    db_war = db_war.loc[db_war['year'] >= 2000]
+
+
+    db_war_oil = db_war.loc[(db_war['country'] == 'Iraq') | (db_war['country'] == 'Afghanistan') | (db_war['country'] == 'South Sudan')]
+    db_main_year = st.session_state.df_data.groupby('year').first().reset_index()
+    db_war_oil_pivot = db_war_oil.pivot(index='year', columns='country', values='conflict_deaths')
+    db_war_oil_pivot = db_war_oil_pivot.rename(columns={'Afghanistan': 'afghanistan_deaths', 'Iraq': 'iraq_deaths', 'South Sudan': 'south_sudan_deaths'})
+
+    corr_matrix_war = db_main_year.merge(db_war_oil_pivot, how='left', on='year')
+    corr_matrix_war = corr_matrix_war[['year', 'oil_value_usd', 'euro_value_usd', 'dolar_value_brl', 'ipc_value_percent_a_m', 'nasdaq_value', 'afghanistan_deaths', 'iraq_deaths', 'south_sudan_deaths']]
+    corr_matrix_war = corr_matrix_war.corr().round(2)
+    corr_matrix_war.columns = [
         "Ano",
-        "Mês",
-        "Dia",
         "Valor Brent (USD)",
         "Valor Euro (USD)",
         "Valor Dolar (BRL)",
         "IPC Percent (a.m)",
         "Valor Nasdaq",
+        "Mortes - Afeganistão",
+        "Mortes - Iraque",
+        "Mortes - Sudão do Sul"
     ]
     fig = ff.create_annotated_heatmap(
-        z=correlation_matrix.to_numpy(),
-        y=correlation_matrix.columns.to_list(),
-        x=correlation_matrix.columns.to_list(),
+        z=corr_matrix_war.to_numpy(),
+        y=corr_matrix_war.columns.to_list(),
+        x=corr_matrix_war.columns.to_list(),
         textfont_color="white",
         zmax=1,
         zmin=-1,
@@ -119,6 +156,25 @@ with tab1:
         Entender essas dinâmicas é crucial para qualquer estratégia de gestão de risco e investimento, pois fornece uma visão mais holística e fundamentada do mercado. Através desta lente analítica, você pode antecipar melhor as reações do mercado a eventos futuros e posicionar-se de forma proativa.
         """
     )
+
+    st.divider()
+
+    fig = px.line(db_war_oil, x="year", y="conflict_deaths", color="country")
+
+    fig.update_layout(
+        title="Conflitos de Guerra", 
+        title_font=dict(size=24), 
+        width=500, 
+        height=500,
+        legend_title="País"
+    )
+    newnames = {'Iraq': 'Iraque', 'Afghanistan': 'Afeganistão', 'South Sudan': 'Sudão do Sul'}
+    fig.for_each_trace(lambda t: t.update(name = newnames[t.name]))
+    fig.update_yaxes(title="Total de Mortes", title_font=dict(size=18))
+
+    fig.update_xaxes(title="Ano", title_font=dict(size=18))
+    st.plotly_chart(fig, use_container_width=True)
+
 
 
 with tab2:
