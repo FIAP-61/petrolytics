@@ -15,7 +15,7 @@ st.header("Insights Extraídos 📊")
 
 # Layout do aplicativo
 tab0, tab1, tab2 = st.tabs(
-    ["Linha do Tempo", "Indicadores Econômicos", "Análise dos dias da Semana"]
+    ["Linha do Tempo", "Indicadores Econômicos", "Análise Amostral"]
 )
 
 if "df_data" not in st.session_state:
@@ -170,6 +170,21 @@ with tab1:
     fig.update_xaxes(title="Ano", title_font=dict(size=18))
     st.plotly_chart(fig, use_container_width=True)
 
+    st.markdown(
+        """
+        Considerando que os recursos de extração do petróleo estão inseridos no ambiente de alguns países com conflitos de guerra, parte da nossa análise de dados foi dedicada para entender as correlações que os dados de guerra possuem com o petróleo Brent especificamente.
+        Para analisar os dados na matriz de correlação consideramos apenas os três primeiros países que possuem o maior indicador de conflitos nos últimos anos.
+
+        No gráfico de linhas plotamos o comportamento desses três países e podemos ver que o Afeganistão é o país que mais possui números referentes aos altos índices de conflitos.
+        Olhando esse país especificamente na matriz de correlação vemos que os dados de guerra do Afeganistão apresentam mais correlação com os dados de valores econômicos dos Estados Unidos (NASDAQ) do que com os dados do petróleo Brent.
+        Portanto não conseguimos correlacionar, pelo menos não diretamente, nenhum impacto dos maiores conflitos de guerra com o preço do petróleo Brent.
+
+        """
+    )
+
+    st.markdown(
+    "Fonte: [War and Peace](https://ourworldindata.org/war-and-peace)"
+    )
 
 
 with tab2:
@@ -203,7 +218,12 @@ with tab2:
 
     with col2:
         st.write(
-            "Neste gráfico, observamos a contagem de valores registrados para o petróleo Brent durante cada dia da semana. A distribuição reflete o pulso do comércio global de petróleo, com a atividade do mercado seguindo o calendário comercial tradicional. Durante os finais de semana, vemos uma queda notável, um reflexo direto do fechamento dos mercados globais. Essa tendência ressalta a importância do tempo na indústria do petróleo, onde cada dia da semana carrega seu próprio perfil de atividade e potencial de negociação."
+            """
+            Neste gráfico, observamos a contagem de valores registrados para o petróleo Brent durante cada dia da semana. 
+            A distribuição reflete o pulso do comércio global de petróleo, com a atividade do mercado seguindo o calendário comercial tradicional. 
+            Durante os finais de semana, vemos uma queda notável, um reflexo direto do fechamento dos mercados globais. 
+            Essa tendência ressalta a importância do tempo na indústria do petróleo, onde cada dia da semana carrega seu próprio perfil de atividade e potencial de negociação.
+            """
         )
 
 
@@ -223,7 +243,7 @@ with tab2:
             text_auto=True
         )
     fig.update_layout(
-        title="Distribuição do valor do Petróleo Brent em cada ano por dia da semana",
+        title="Contagem de valores ao longo dos anos",
         title_font=dict(size=24),
         width=1500,
         height=1500,
@@ -239,5 +259,9 @@ with tab2:
     )
     st.plotly_chart(fig, use_container_width=True)
     st.write(
-        "Aqui, traçamos a distribuição dos preços do petróleo Brent ao longo dos anos, discriminada por dias da semana. Esse gráfico revela se existem padrões de preços consistentes ou anomalias que emergem em dias específicos ao longo do tempo. Pode-se notar, por exemplo, se os picos de preço tendem a ocorrer mais em um dia da semana do que em outros, o que poderia sugerir a influência de relatórios de mercado ou atualizações políticas regulares. Essa perspectiva temporal oferece aos analistas um detalhe granular, possibilitando uma análise direcionada que pode capturar nuances ocultas nas tendências de preços."
+        """
+        Aqui, traçamos a distribuição dos preços do petróleo Brent ao longo dos anos. Esse gráfico revela se existem padrões de preços consistentes ao longo do tempo na maior fase de referência dos dados. 
+        Pode-se notar, por exemplo, os picos de referência entre 2003 e 2017, o que poderia sugerir a influência de relatórios de mercado ou atualizações políticas regulares. 
+        Essa perspectiva temporal oferece aos analistas um detalhe granular possibilitando uma análise direcionada que pode capturar nuances ocultas nas tendências de preços.
+        """
     )
