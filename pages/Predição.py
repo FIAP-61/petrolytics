@@ -101,6 +101,9 @@ with tab2:
         "É importante notar que nossa análise focou no intervalo de dados a partir do ano 2000. Esta escolha foi feita devido à relevância e qualidade dos dados históricos disponíveis, que proporcionam um panorama mais consistente e significativo das tendências do mercado para o Petróleo Brent. Assim, evitamos a defasagem de dados mais antigos que poderiam comprometer a acurácia das previsões."
     )
 
+    # Adicionar imagem das times series
+    st.image("pages/lineplot_insights_timeline.png", caption="Referência das Séries Temporais de análise com dados relevantes a partir dos anos 2000.")
+
     # Métricas de avaliação dos modelos (Treino dos dados 2018-2023)
     st.header("Métricas de Avaliação dos Modelos")
     df_metrics = pd.read_csv(r"source/model_metrics.csv", sep="|")
