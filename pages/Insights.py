@@ -178,10 +178,10 @@ with tab2:
         ## DATAVIZ COUNT PLOT
         fig = px.histogram(
             st.session_state.df_data,
-            y="week_date",
+            x="week_date",
             text_auto=True,
             color="week_date",
-            color_discrete_sequence=px.colors.qualitative.Safe,
+            color_discrete_sequence=px.colors.qualitative.D3,
         )
 
         fig.update_layout(
@@ -206,25 +206,37 @@ with tab2:
             "Neste gráfico, observamos a contagem de valores registrados para o petróleo Brent durante cada dia da semana. A distribuição reflete o pulso do comércio global de petróleo, com a atividade do mercado seguindo o calendário comercial tradicional. Durante os finais de semana, vemos uma queda notável, um reflexo direto do fechamento dos mercados globais. Essa tendência ressalta a importância do tempo na indústria do petróleo, onde cada dia da semana carrega seu próprio perfil de atividade e potencial de negociação."
         )
 
-    fig = px.scatter(
-        st.session_state.df_data,
-        x="oil_value_usd",
-        y="year",
-        color="week_date",
-        title="Relation Between Oil Price and Year based on the Week Day",
-        color_discrete_sequence=px.colors.qualitative.Safe,
-    )
+
+    st.divider()
+    
+    # fig = px.scatter(
+    #     st.session_state.df_data,
+    #     x="oil_value_usd",
+    #     y="year",
+    #     color="week_date",
+    #     title="Relation Between Oil Price and Year based on the Week Day",
+    #     color_discrete_sequence=px.colors.qualitative.Safe,
+    # )
+    fig = px.histogram(
+            st.session_state.df_data,
+            y="year",
+            text_auto=True
+        )
     fig.update_layout(
         title="Distribuição do valor do Petróleo Brent em cada ano por dia da semana",
         title_font=dict(size=24),
-        width=500,
-        height=750,
+        width=1500,
+        height=1500,
         template="plotly_dark",
         showlegend=False,
+        bargap=0.30
     )
     fig.update_yaxes(title="Ano", title_font=dict(size=18))
     fig.update_xaxes(title="Valor do Petróleo Brent", title_font=dict(size=18))
-
+    # Atualize as barras
+    fig.update_traces(
+        textposition="outside",
+    )
     st.plotly_chart(fig, use_container_width=True)
     st.write(
         "Aqui, traçamos a distribuição dos preços do petróleo Brent ao longo dos anos, discriminada por dias da semana. Esse gráfico revela se existem padrões de preços consistentes ou anomalias que emergem em dias específicos ao longo do tempo. Pode-se notar, por exemplo, se os picos de preço tendem a ocorrer mais em um dia da semana do que em outros, o que poderia sugerir a influência de relatórios de mercado ou atualizações políticas regulares. Essa perspectiva temporal oferece aos analistas um detalhe granular, possibilitando uma análise direcionada que pode capturar nuances ocultas nas tendências de preços."
